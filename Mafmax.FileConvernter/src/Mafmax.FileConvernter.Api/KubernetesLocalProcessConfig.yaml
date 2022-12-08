@@ -1,0 +1,5 @@
+version: 0.1
+
+env:
+  -  name: MONGODB_HOST_SERVICE
+     value: $(services:mongodb-filesstore-service)

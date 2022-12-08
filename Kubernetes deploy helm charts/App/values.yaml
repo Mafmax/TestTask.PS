@@ -1,0 +1,15 @@
+# Default values
+
+api:
+  service: testtaskps-api-service
+  name: testtaskps-api
+  replicas: 1
+  image: mafmax/testtaskps-api:1.2.2
+  port: 80 # Port on POD.
+  servicePort: 8888
+db:
+  service: mongodb-filesstore-service
+  name: mongodb-filesstore
+  image: mongo
+  port: 27017
+  servicePort: 7777

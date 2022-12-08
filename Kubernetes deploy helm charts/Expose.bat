@@ -1,0 +1,1 @@
+minikube service testtaskps-api-service --url
