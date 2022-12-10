@@ -4,7 +4,6 @@ namespace Mafmax.FileConverter.Utils.Proxies
     /// <summary>
     /// Represents a Stream that delegates all of its operations to a wrapped Stream.
     /// </summary>
-    /// <seealso cref="System.IO.Stream" />
     public class DelegatingStream : Stream
     {
         private readonly Stream _wrappedStream;

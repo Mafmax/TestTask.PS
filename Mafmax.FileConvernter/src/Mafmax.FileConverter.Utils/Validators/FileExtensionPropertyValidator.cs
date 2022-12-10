@@ -1,14 +1,30 @@
-﻿using FluentValidation;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
+using FluentValidation;
 using FluentValidation.Validators;
 
 namespace Mafmax.FileConverter.Utils.Validators;
+
+/// <summary>
+/// Represents validator for FileExtension property.
+/// </summary>
+/// <typeparam name="T"></typeparam>
 public class FileExtensionPropertyValidator<T> : PropertyValidator<T, string>
 {
-    private readonly string[] _extensions;
+    private readonly HashSet<string> _extensions;
 
+    /// <inheritdoc />
+    public override string Name { get; } = nameof(FileExtensionPropertyValidator<T>);
+
+    /// <summary>
+    /// Creates an instance of <see cref="FileExtensionPropertyValidator{T}"/>.
+    /// </summary>
+    /// <param name="extensions">Array of extension strings.
+    /// Note that extensions should contain starting point. Use ".pdf" instead of "pdf".</param>
     public FileExtensionPropertyValidator(params string[] extensions)
     {
-        _extensions = extensions;
+        ValidateInputExtensions(extensions);
+        _extensions = extensions.ToHashSet();
     }
 
     /// <inheritdoc />
@@ -16,9 +32,7 @@ public class FileExtensionPropertyValidator<T> : PropertyValidator<T, string>
     {
         var extension = Path.GetExtension(value);
 
-        var modifiedExtensions = _extensions.Select(x => '.' + x);
-
-        if (modifiedExtensions.Contains(extension)) return true;
+        if (_extensions.Contains(extension)) return true;
 
         context.AddFailure(context.PropertyName,
             $"File extension must be one of follow: {string.Join(",", _extensions)}.");
@@ -26,6 +40,17 @@ public class FileExtensionPropertyValidator<T> : PropertyValidator<T, string>
         return false;
     }
 
-    /// <inheritdoc />
-    public override string Name { get; } = nameof(FileExtensionPropertyValidator<T>);
+    private static void ValidateInputExtensions(IEnumerable<string> extensions)
+    {
+        var incorrectExtensions = extensions
+            .Where(x => !x.StartsWith('.'))
+            .ToArray();
+
+        if (incorrectExtensions.Length == 0) return;
+
+        var incorrectExtensionsString = string.Join(';', incorrectExtensions);
+
+        throw new InvalidOperationException(
+            $"Incorrect extensions: {incorrectExtensionsString}. Example of correct extension: \".pdf\"");
+    }
 }

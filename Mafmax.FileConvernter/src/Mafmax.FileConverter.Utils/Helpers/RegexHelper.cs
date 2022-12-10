@@ -2,6 +2,10 @@
 using Mafmax.FileConverter.Utils.Helpers.Abstraction;
 
 namespace Mafmax.FileConverter.Utils.Helpers;
+
+/// <summary>
+/// Helper class used as container for common regular expressions.
+/// </summary>
 public class RegexHelper : IRegexHelper
 {
     /// <inheritdoc />

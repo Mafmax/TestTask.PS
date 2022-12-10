@@ -8,7 +8,7 @@ public class UploadFileRequestValidator : AbstractValidator<UploadFileRequest>
 {
     public UploadFileRequestValidator()
     {
-        var fileExtensionValidator = new FileExtensionPropertyValidator<UploadFileRequest>("html");
+        var fileExtensionValidator = new FileExtensionPropertyValidator<UploadFileRequest>(".html");
         RuleFor(x => x.Name)
             .SetValidator(fileExtensionValidator)
             .WithMessage("Invalid upload file model.");

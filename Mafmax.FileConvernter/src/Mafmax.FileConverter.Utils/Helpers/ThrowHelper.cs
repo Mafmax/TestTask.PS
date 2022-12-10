@@ -5,6 +5,9 @@ using Mafmax.FileConverter.Utils.Helpers.Abstraction;
 
 namespace Mafmax.FileConverter.Utils.Helpers;
 
+/// <summary>
+/// Helper class used for throwing exceptions.
+/// </summary>
 [StackTraceHidden]
 public class ThrowHelper : IThrowHelper
 {
