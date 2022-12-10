@@ -17,6 +17,7 @@ WORKDIR /src
 COPY ["src/Mafmax.FileConvernter.Api/Mafmax.FileConvernter.Api.csproj", "src/Mafmax.FileConvernter.Api/"]
 COPY ["src/Mafmax.FileConverter.BusinessLogic/Mafmax.FileConverter.BusinessLogic.csproj", "src/Mafmax.FileConverter.BusinessLogic/"]
 COPY ["src/Mafmax.FileConverter.DataAccess/Mafmax.FileConverter.DataAccess.csproj", "src/Mafmax.FileConverter.DataAccess/"]
+COPY ["src/Mafmax.FileConverter.SharedConfiguration/Mafmax.FileConverter.SharedConfiguration.csproj", "src/Mafmax.FileConverter.SharedConfiguration/"]
 COPY ["src/Mafmax.FileConverter.Utils/Mafmax.FileConverter.Utils.csproj", "src/Mafmax.FileConverter.Utils/"]
 RUN dotnet restore "src/Mafmax.FileConvernter.Api/Mafmax.FileConvernter.Api.csproj"
 COPY . .

@@ -11,6 +11,7 @@ public static class ServiceCollectionExtensions
 {
     private static readonly IConfiguration Configuration = new ConfigurationBuilder()
         .AddJsonFile("appsettings.shared.json")
+        .AddEnvironmentVariables()
         .Build();
 
     /// <summary>

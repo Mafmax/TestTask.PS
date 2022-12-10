@@ -4,7 +4,7 @@ api:
   service: testtaskps-api-service
   name: testtaskps-api
   replicas: 1
-  image: mafmax/testtaskps-api:1.2.2
+  image: mafmax/testtaskps-api:1.2.3
   port: 80 # Port on POD.
   servicePort: 8888
 db:
