@@ -4,6 +4,9 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace Mafmax.FileConvernter.Api.Filters.OpenApiFilters;
 
+/// <summary>
+/// Filter, which add multipart file requirement to OpenAPI documentation.
+/// </summary>
 public class RequiresMultipartFileOperationFilter : IOperationFilter
 {
     /// <inheritdoc />

@@ -9,19 +9,31 @@ using static Microsoft.Net.Http.Headers.ContentDispositionHeaderValue;
 
 namespace Mafmax.FileConvernter.Api.Controllers.Abstracrions
 {
+    /// <summary>
+    /// Base class for controllers in current project APIs.
+    /// </summary>
     [ApiController]
     [Route("api/[controller]")]
-    public class ApplicationControllerBase : ControllerBase
+    public abstract class ApplicationControllerBase : ControllerBase
     {
+        /// <summary>
+        /// Loads file and binds result to model.
+        /// </summary>
+        /// <param name="model">Model to bind loaded file.</param>
+        /// <param name="fileContentBinding">
+        /// Action to bind file content to model.
+        /// Second parameter of delegate represents file data provider part by part.
+        /// </param>
+        /// <param name="cancellationToken"></param>
         protected async Task LoadFileAsync<TModel>(TModel model,
-            Action<TModel, IAsyncEnumerable<ReadOnlyMemory<byte>>> fileContentProviderBinding,
+            Action<TModel, IAsyncEnumerable<ReadOnlyMemory<byte>>> fileContentBinding,
             CancellationToken cancellationToken = default)
             where TModel : class, new()
         {
             var reader = OpenUploadMultipartFile();
             var (formValueProvider, section) = await GetFormValuesAsync(reader, cancellationToken);
 
-            fileContentProviderBinding(model, GetUploadingFileContentProvider(reader, section, cancellationToken));
+            fileContentBinding(model, GetUploadingFileContentProvider(reader, section, cancellationToken));
 
             await TryUpdateModelAsync(model, prefix: "", formValueProvider);
         }
@@ -71,9 +83,9 @@ namespace Mafmax.FileConvernter.Api.Controllers.Abstracrions
                 if (!IsCanRead(s)) continue;
 
                 using var memoryStream = new MemoryStream();
-                // ReSharper disable once MustUseReturnValue
-                await s.Body.CopyToAsync(memoryStream, cancellationToken);
 
+                await s.Body.CopyToAsync(memoryStream, cancellationToken);
+                
                 yield return memoryStream.ToArray();
             }
 

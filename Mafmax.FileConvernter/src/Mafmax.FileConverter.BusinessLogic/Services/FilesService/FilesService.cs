@@ -7,6 +7,8 @@ using Mafmax.FileConverter.BusinessLogic.Services.FilesService.Responses;
 using Mafmax.FileConverter.DataAccess.Models;
 using Mafmax.FileConverter.DataAccess.Repositories.FilesRepository.Abstractions;
 using Mafmax.FileConverter.DataAccess.Repositories.FilesRepository.Responses;
+using PuppeteerSharp;
+using PuppeteerSharp.Media;
 
 namespace Mafmax.FileConverter.BusinessLogic.Services.FilesService;
 
@@ -36,7 +38,8 @@ public class FilesService : IFilesService
         CancellationToken cancellationToken = default)
     {
         var file = _mapper.Map<FilePointerModel>(request);
-        await using var writeFileResponse = await _filesRepository.OpenFileToSaveAsync(file, cancellationToken);
+        await using var writeFileResponse = await _filesRepository
+            .OpenFileToSaveAsync(file, cancellationToken);
         var fileContent = request.PartitionFileContent
             .WithCancellation(cancellationToken);
 

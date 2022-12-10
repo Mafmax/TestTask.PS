@@ -1,4 +1,6 @@
-﻿namespace Mafmax.FileConverter.BusinessLogic.Services.DocConverter.Abstractions;
+﻿using PuppeteerSharp;
+
+namespace Mafmax.FileConverter.BusinessLogic.Services.DocConverter.Abstractions;
 
 /// <summary>
 /// Defines methods to convert documents.

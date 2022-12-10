@@ -13,10 +13,17 @@ using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Extensions.Options;
 
 namespace Mafmax.FileConvernter.Api.Controllers;
+
+/// <summary>
+/// Controller for process requests binded with files.
+/// </summary>
 public class FilesController : ApplicationControllerBase
 {
     private readonly IFilesService _filesService;
 
+    /// <summary>
+    /// Creates an instance of <see cref="FilesController"/>.
+    /// </summary>
     public FilesController(IFilesService filesService)
     {
         _filesService = filesService;
@@ -39,10 +46,8 @@ public class FilesController : ApplicationControllerBase
     }
 
     /// <summary>
-    /// 
+    /// Uploads file as multipart form data.
     /// </summary>
-    /// <param name="requestValidator"></param>
-    /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [DisableFormValueModelBinding]
     [RequiresMultipartFile]
@@ -72,6 +77,10 @@ public class FilesController : ApplicationControllerBase
 
     }
 
+    /// <summary>
+    /// Downloads file.
+    /// </summary>
+    /// <exception cref="InvalidOperationException"></exception>
     [HttpGet("download/{FileId}")]
     public async Task<ActionResult<DownloadFileResponse>> DownloadFileAsync(
        [FromRoute] DownloadFileRequest request,
@@ -98,7 +107,9 @@ public class FilesController : ApplicationControllerBase
         throw new InvalidOperationException($"Couldn't recognize MIME type of file content. File name was {name}");
     }
 
-    // ReSharper disable once RouteTemplates.RouteParameterIsNotPassedToMethod
+    /// <summary>
+    /// Converts file.
+    /// </summary>
     [HttpGet("convert/{FileId}")]
     public async Task<ActionResult<ConvertFileResponse>> ConvertFileAsync(
         [FromRoute] ConvertFileRequest request,
@@ -107,6 +118,9 @@ public class FilesController : ApplicationControllerBase
         return await _filesService.ConvertFileAsync(request, cancellationToken);
     }
 
+    /// <summary>
+    /// Gets file name.
+    /// </summary>
     [HttpGet("name/{FileId}")]
     public async Task<ActionResult<GetFileNameResponse>> GetFileNameAsync(
         [FromRoute] GetFileNameRequest request,

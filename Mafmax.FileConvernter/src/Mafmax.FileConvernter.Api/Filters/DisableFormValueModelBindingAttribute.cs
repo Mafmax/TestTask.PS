@@ -2,6 +2,9 @@
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace Mafmax.FileConvernter.Api.Filters;
+/// <summary>
+/// Attribute to disable form data binding used to multipart file uploading.
+/// </summary>
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
 public class DisableFormValueModelBindingAttribute : Attribute, IResourceFilter
 {

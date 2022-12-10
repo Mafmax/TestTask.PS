@@ -3,11 +3,20 @@ using Mafmax.FileConverter.Utils.Exceptions;
 using Microsoft.Extensions.Options;
 
 namespace Mafmax.FileConvernter.Api.Middlewares;
+
+/// <summary>
+/// Middleware to handle exceptions.
+/// </summary>
 public class ExceptionHandlingMiddleware : IMiddleware
 {
     private readonly ILogger<ExceptionHandlingMiddleware> _logger;
     private readonly IOptions<ApplicationSettings> _appSettings;
 
+    /// <summary>
+    /// Creates an instance of <see cref="ExceptionHandlingMiddleware"/>.
+    /// </summary>
+    /// <param name="logger"></param>
+    /// <param name="appSettings"></param>
     public ExceptionHandlingMiddleware(ILogger<ExceptionHandlingMiddleware> logger, IOptions<ApplicationSettings> appSettings)
     {
         _logger = logger;
