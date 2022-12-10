@@ -19,4 +19,5 @@ public static class ServiceCollectionExtensions
             .AddSingleton<IThrowHelper, ThrowHelper>()
             .AddSingleton<IDateTimeProvider, DateTimeProvider>()
             .AddSingleton<IRegexHelper, RegexHelper>();
+
 }

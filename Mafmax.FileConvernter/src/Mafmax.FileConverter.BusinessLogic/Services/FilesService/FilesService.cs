@@ -7,17 +7,21 @@ using Mafmax.FileConverter.BusinessLogic.Services.FilesService.Responses;
 using Mafmax.FileConverter.DataAccess.Models;
 using Mafmax.FileConverter.DataAccess.Repositories.FilesRepository.Abstractions;
 using Mafmax.FileConverter.DataAccess.Repositories.FilesRepository.Responses;
-using PuppeteerSharp;
-using PuppeteerSharp.Media;
 
 namespace Mafmax.FileConverter.BusinessLogic.Services.FilesService;
 
+/// <summary>
+/// Servise to work with files.
+/// </summary>
 public class FilesService : IFilesService
 {
     private readonly IDocConverter _docConverter;
     private readonly IFilesRepository _filesRepository;
     private readonly IMapper _mapper;
 
+    /// <summary>
+    /// Creates an instance of <see cref="FilesService"/>.
+    /// </summary>
     public FilesService(IDocConverter docConverter,
         IFilesRepository filesRepository,
         IMapper mapper)
@@ -92,7 +96,7 @@ public class FilesService : IFilesService
         CancellationToken cancellationToken = default)
     {
         var fileName =  Path.ChangeExtension(fileToConvert.FilePointer.Name, "pdf");
-        var fileModel = new FilePointerModel { Name = fileName };
+        var fileModel = new FilePointerModel(fileName);
         var fileContent = await ConvertFileContentAsync(fileToConvert.Stream, cancellationToken);
         var file = new ReadFileResponse(fileModel, fileContent);
 
@@ -102,9 +106,9 @@ public class FilesService : IFilesService
     private async Task<Stream> ConvertFileContentAsync(Stream fileToConvert, CancellationToken cancellationToken = default)
     {
         var html = GetHtmlFromStream(fileToConvert);
-        var pdfOptions = new PdfOptions { Format = PaperFormat.A4 };
+       
         var file = await _docConverter
-            .ConvertToPdfAsync(html, pdfOptions, cancellationToken);
+            .ConvertToPdfAsync(html, cancellationToken);
 
         return file;
     }

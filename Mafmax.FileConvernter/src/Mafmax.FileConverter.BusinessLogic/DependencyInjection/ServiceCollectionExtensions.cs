@@ -10,13 +10,22 @@ using PuppeteerSharp;
 
 namespace Mafmax.FileConverter.BusinessLogic.DependencyInjection;
 
+/// <summary>
+/// Contains extensions for <see cref="IServiceCollection"/>.
+/// </summary>
 public static class ServiceCollectionExtensions
 {
-    private static bool _isChromiumDownloaded = false;
+    private static bool _isChromiumDownloaded;
 
+    /// <summary>
+    /// Configures business logic services. Central configuration for entire current project.
+    /// </summary>
+    /// <param name="services">Collection of services.</param>
+    /// <param name="configuration">Configuration.</param>
+    /// <returns>Collection of configured services to allow method chaining.</returns>
     public static IServiceCollection SetupBusinessLayer(this IServiceCollection services, IConfiguration configuration) =>
         services
-            .SetupDataAccessLayer(configuration)
+            .SetupDataAccessLayer()
             .AddScoped<IDocConverter, DocConverter>()
             .AddScoped<IFilesService, FilesService>()
             .AddAutoMapper(cfg => cfg.AddMaps(typeof(BusinessLayerAssemblyMarker).Assembly))

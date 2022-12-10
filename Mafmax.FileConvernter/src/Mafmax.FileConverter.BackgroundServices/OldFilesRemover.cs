@@ -1,19 +1,20 @@
-﻿using Mafmax.FileConverter.BackgroundServices.Settings;
-using Mafmax.FileConverter.BusinessLogic.Services.FilesService.Abstractions;
+﻿using Mafmax.FileConverter.DataAccess.Repositories.FilesRepository.Abstractions;
+using Mafmax.FileConverter.SharedConfiguration.Options;
 using Microsoft.Extensions.Options;
 
 namespace Mafmax.FileConverter.BackgroundServices;
 public class OldFilesRemover : BackgroundService
 {
     private readonly ILogger<OldFilesRemover> _logger;
-    private readonly IFilesService _filesService;
+    private readonly IFilesRepository _filesRepository;
     private readonly TimeSpan _maxFileAge;
     public OldFilesRemover(ILogger<OldFilesRemover> logger,
-        IFilesService filesService, IOptions<ApplicationSettings> appSettings)
+        IFilesRepository filesRepository,
+        IOptions<ApplicationSettings> appSettings)
     {
         _logger = logger;
-        _filesService = filesService;
-        _maxFileAge = appSettings.Value.FileAgeLimit;
+        _filesRepository = filesRepository;
+        _maxFileAge = appSettings.Value.FilesAgeLimit;
     }
 
     /// <inheritdoc />
@@ -24,7 +25,7 @@ public class OldFilesRemover : BackgroundService
             await Task.Yield();
             _logger.LogInformation("Start removing old files.");
             var filesRemovedCount =
-                await _filesService.RemoveOldFilesAsync(_maxFileAge, stoppingToken);
+                await _filesRepository.RemoveOldFilesAsync(_maxFileAge, stoppingToken);
             _logger.LogInformation("Removed {0} old files.", filesRemovedCount);
 
             await Task.Delay(_maxFileAge, stoppingToken);

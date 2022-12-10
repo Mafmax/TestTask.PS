@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Mafmax.FileConverter.BusinessLogic\Mafmax.FileConverter.BusinessLogic.csproj" />
+    <ProjectReference Include="..\Mafmax.FileConverter.SharedConfiguration\Mafmax.FileConverter.SharedConfiguration.csproj" />
   </ItemGroup>
 
 </Project>

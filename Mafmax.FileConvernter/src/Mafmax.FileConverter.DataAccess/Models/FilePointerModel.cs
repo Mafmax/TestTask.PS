@@ -6,27 +6,22 @@ namespace Mafmax.FileConverter.DataAccess.Models;
 /// <summary>
 /// Represents a lightweight file model with link to content.
 /// </summary>
-public record FilePointerModel
+/// <param name="Id">Id of model.</param>
+/// <param name="FileId">Id of file content.</param>
+/// <param name="Name">File name with extension and without path.</param>
+/// <param name="CreatedAt">Created date.</param>
+public record FilePointerModel(
+    [property: BsonId] string Id,
+    string FileId,
+    string Name,
+    [property: BsonRepresentation(BsonType.DateTime)]
+    DateTimeOffset CreatedAt)
 {
     /// <summary>
-    /// Id of model.
+    /// Creates an instance of <see cref="FilePointerModel"/>.
     /// </summary>
-    [BsonId]
-    public string Id { get; init; } = null!;
-
-    /// <summary>
-    /// Id of file content.
-    /// </summary>
-    public string FileId { get; init; } = null!;
-
-    /// <summary>
-    /// File name with extension and without path.
-    /// </summary>
-    public string Name { get; init; } = string.Empty;
-
-    /// <summary>
-    /// Created date.
-    /// </summary>
-    [BsonRepresentation(BsonType.DateTime)]
-    public DateTimeOffset CreatedAt { get; init; }
+    /// <param name="name">Name of file.</param>
+    public FilePointerModel(string name) : this(null!, null!, name, default)
+    {
+    }
 }

@@ -5,8 +5,14 @@ using Mafmax.FileConverter.Utils.Validators;
 
 namespace Mafmax.FileConverter.BusinessLogic.Services.FilesService.Validators;
 
+/// <summary>
+/// Validator for checking properties of <see cref="ConvertFileRequest"/>.
+/// </summary>
 public class ConvertFileRequestValidator : AbstractValidator<ConvertFileRequest>
 {
+    /// <summary>
+    /// Used to set validation rules.
+    /// </summary>
     public ConvertFileRequestValidator(IRegexHelper regexHelper)
     {
         var fileIdValidator = new FileIdPropertyValidator<ConvertFileRequest>(regexHelper.FileIdRegex);

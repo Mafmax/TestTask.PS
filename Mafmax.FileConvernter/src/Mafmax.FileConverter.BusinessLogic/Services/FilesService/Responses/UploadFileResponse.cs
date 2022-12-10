@@ -1,6 +1,13 @@
 ﻿namespace Mafmax.FileConverter.BusinessLogic.Services.FilesService.Responses;
 
-public record UploadFileResponse
+/// <summary>
+/// Represents a response for file uploading operation.
+/// </summary>
+/// <param name="FileId">Uploading file id.</param>
+public record UploadFileResponse(string FileId)
 {
-    public string FileId { get; init; } = string.Empty;
+    /// <summary>
+    /// Used for AutoMapper.
+    /// </summary>
+    protected UploadFileResponse():this(string.Empty){}
 }

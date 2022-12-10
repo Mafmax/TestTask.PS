@@ -1,5 +1,5 @@
-﻿using Mafmax.FileConverter.DataAccess.Configuration;
-using Mafmax.FileConverter.DataAccess.Models;
+﻿using Mafmax.FileConverter.DataAccess.Models;
+using Mafmax.FileConverter.SharedConfiguration.Options;
 using MongoDB.Driver;
 using MongoDB.Driver.GridFS;
 

@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Mafmax.FileConverter.SharedConfiguration\Mafmax.FileConverter.SharedConfiguration.csproj" />
     <ProjectReference Include="..\Mafmax.FileConverter.Utils\Mafmax.FileConverter.Utils.csproj" />
   </ItemGroup>
 

@@ -1,4 +1,4 @@
-﻿using Mafmax.FileConvernter.Api.Settings;
+﻿using Mafmax.FileConverter.SharedConfiguration.Options;
 using Mafmax.FileConverter.Utils.Exceptions;
 using Microsoft.Extensions.Options;
 

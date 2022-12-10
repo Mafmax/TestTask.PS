@@ -1,8 +1,8 @@
-﻿using Mafmax.FileConverter.DataAccess.Configuration;
-using Mafmax.FileConverter.DataAccess.Extensions;
+﻿using Mafmax.FileConverter.DataAccess.Extensions;
 using Mafmax.FileConverter.DataAccess.Models;
 using Mafmax.FileConverter.DataAccess.Repositories.FilesRepository.Abstractions;
 using Mafmax.FileConverter.DataAccess.Repositories.FilesRepository.Responses;
+using Mafmax.FileConverter.SharedConfiguration.Options;
 using Mafmax.FileConverter.Utils.Helpers.Abstraction;
 using Mafmax.FileConverter.Utils.Proxies;
 using Microsoft.Extensions.Options;

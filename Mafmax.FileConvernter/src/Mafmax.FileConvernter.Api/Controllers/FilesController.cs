@@ -6,7 +6,7 @@ using Mafmax.FileConvernter.Api.Filters.OpenApiFilters;
 using Mafmax.FileConverter.BusinessLogic.Services.FilesService.Abstractions;
 using Mafmax.FileConverter.BusinessLogic.Services.FilesService.Requests;
 using Mafmax.FileConverter.BusinessLogic.Services.FilesService.Responses;
-using Mafmax.FileConverter.DataAccess.Configuration;
+using Mafmax.FileConverter.SharedConfiguration.Options;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.StaticFiles;
@@ -24,12 +24,15 @@ public class FilesController : ApplicationControllerBase
 
     // TODO mafmax: Delete
     [HttpGet("variables")]
-    public ActionResult<object> GetEnvAsync([FromServices] IOptions<MongoDbSettings> settings)
+    public ActionResult<object> GetEnvAsync(
+        [FromServices] IOptions<MongoDbSettings> settings,
+        [FromServices] IOptions<ApplicationSettings> sharedSettings)
     {
         var result = new
         {
             MongoDbConnectionString = Environment.GetEnvironmentVariable("MongoDbSettings__ConnectionString"),
-            AppsettingsSection = settings.Value.ConnectionString
+            AppsettingsSection = settings.Value.ConnectionString,
+            Shared = sharedSettings.Value
         };
 
         return result;

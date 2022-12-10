@@ -5,8 +5,15 @@ using Mafmax.FileConverter.DataAccess.Models;
 using Mafmax.FileConverter.DataAccess.Repositories.FilesRepository.Responses;
 
 namespace Mafmax.FileConverter.BusinessLogic.MappingProfiles;
+
+/// <summary>
+/// Contains mappings.
+/// </summary>
 public class FilesServiceProfile : Profile
 {
+    /// <summary>
+    /// Used to set maps.
+    /// </summary>
     public FilesServiceProfile()
     {
         CreateMap<UploadFileRequest, FilePointerModel>()
