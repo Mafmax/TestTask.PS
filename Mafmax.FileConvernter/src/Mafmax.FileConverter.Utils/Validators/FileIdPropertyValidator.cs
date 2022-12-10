@@ -7,7 +7,6 @@ namespace Mafmax.FileConverter.Utils.Validators;
 /// <summary>
 /// Represents validator for FileId property.
 /// </summary>
-/// <typeparam name="T"></typeparam>
 public class FileIdPropertyValidator<T> : PropertyValidator<T, string>
 {
     private readonly Regex _fileIdRegex;

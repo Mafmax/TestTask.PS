@@ -8,7 +8,6 @@ namespace Mafmax.FileConverter.Utils.Validators;
 /// <summary>
 /// Represents validator for FileExtension property.
 /// </summary>
-/// <typeparam name="T"></typeparam>
 public class FileExtensionPropertyValidator<T> : PropertyValidator<T, string>
 {
     private readonly HashSet<string> _extensions;

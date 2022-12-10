@@ -5,8 +5,8 @@ using Mafmax.FileConverter.BusinessLogic.Services.FilesService.Abstractions;
 using Mafmax.FileConverter.BusinessLogic.Services.FilesService.Requests;
 using Mafmax.FileConverter.BusinessLogic.Services.FilesService.Responses;
 using Mafmax.FileConverter.DataAccess.Models;
-using Mafmax.FileConverter.DataAccess.Repositories.Abstractions;
-using Mafmax.FileConverter.DataAccess.Responses;
+using Mafmax.FileConverter.DataAccess.Repositories.FilesRepository.Abstractions;
+using Mafmax.FileConverter.DataAccess.Repositories.FilesRepository.Responses;
 using PuppeteerSharp;
 using PuppeteerSharp.Media;
 
@@ -31,15 +31,14 @@ public class FilesService : IFilesService
     public async Task<UploadFileResponse> UploadFileAsync(UploadFileRequest request,
         CancellationToken cancellationToken = default)
     {
-        var file = _mapper.Map<FileModel>(request);
-        var writeFileResponse = await _filesRepository.SaveFileAsync(file, cancellationToken);
-        await using var fileStream = writeFileResponse.StreamToWriteFile;
+        var file = _mapper.Map<FilePointerModel>(request);
+        await using var writeFileResponse = await _filesRepository.OpenFileToSaveAsync(file, cancellationToken);
         var fileContent = request.PartitionFileContent
             .WithCancellation(cancellationToken);
 
         await foreach (var filePart in fileContent)
         {
-            await fileStream.WriteAsync(filePart, cancellationToken);
+            await writeFileResponse.Stream.WriteAsync(filePart, cancellationToken);
         }
 
         var response = _mapper.Map<UploadFileResponse>(writeFileResponse);
@@ -51,10 +50,10 @@ public class FilesService : IFilesService
     public async Task<ConvertFileResponse> ConvertFileAsync(ConvertFileRequest request,
         CancellationToken cancellationToken = default)
     {
-        var fileToConvert = await _filesRepository.ReadFileAsync(request.FileId, cancellationToken);
+        var fileToConvert = await _filesRepository.OpenFileToReadAsync(request.FileId, cancellationToken);
         var fileContent = await ConvertFileAsync(fileToConvert, cancellationToken);
         var fileId = await _filesRepository.SaveFileAsync(fileContent, cancellationToken);
-        await _filesRepository.DeleteFileAsync(fileToConvert.File.Id, cancellationToken);
+       await _filesRepository.DeleteFileAsync(fileToConvert.FilePointer.Id, cancellationToken);
 
         return new ConvertFileResponse(fileId);
     }
@@ -63,7 +62,7 @@ public class FilesService : IFilesService
     public async Task<DownloadFileResponse> DownloadFileAsync(DownloadFileRequest request,
         CancellationToken cancellationToken = default)
     {
-        var file = await _filesRepository.ReadFileAsync(request.FileId, cancellationToken);
+        var file = await _filesRepository.OpenFileToReadAsync(request.FileId, cancellationToken);
         var response = _mapper.Map<DownloadFileResponse>(file);
 
         return response;
@@ -92,9 +91,9 @@ public class FilesService : IFilesService
     private async Task<ReadFileResponse> ConvertFileAsync(ReadFileResponse fileToConvert,
         CancellationToken cancellationToken = default)
     {
-        var fileName =  Path.ChangeExtension(fileToConvert.File.Name, "pdf");
-        var fileModel = new FileModel { Name = fileName };
-        var fileContent = await ConvertFileContentAsync(fileToConvert.StreamToReadFile, cancellationToken);
+        var fileName =  Path.ChangeExtension(fileToConvert.FilePointer.Name, "pdf");
+        var fileModel = new FilePointerModel { Name = fileName };
+        var fileContent = await ConvertFileContentAsync(fileToConvert.Stream, cancellationToken);
         var file = new ReadFileResponse(fileModel, fileContent);
 
         return file;
