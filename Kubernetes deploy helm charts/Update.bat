@@ -1,2 +1,1 @@
-helm delete app
-helm install app App
+helm upgrade app App

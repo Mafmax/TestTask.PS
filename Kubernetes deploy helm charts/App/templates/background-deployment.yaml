@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: {{ .Values.background.name }}
+  labels:
+    app: {{ .Values.background.name }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Values.background.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.background.name }}
+    spec:
+      containers:
+        - name: {{ .Values.background.name }} 
+          image: {{ .Values.background.image }}
+          ports:
+            - containerPort: {{ .Values.background.port }}
+          env:
+            {{ include "common.env.configuration" . | indent 12}}

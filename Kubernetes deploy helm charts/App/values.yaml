@@ -1,8 +1,8 @@
 # Default values
 
 api:
-  service: testtaskps-api-service
   name: testtaskps-api
+  service: testtaskps-api-service
   replicas: 1
   image: mafmax/testtaskps-api:1.2.3
   port: 80 # Port on POD.
@@ -13,3 +13,7 @@ db:
   image: mongo
   port: 27017
   servicePort: 7777
+background:
+  name: testtaskps-background-worker
+  image: mafmax/testtaskps-background-worker:1.0.0
+  port: 80 
