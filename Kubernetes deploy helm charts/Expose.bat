@@ -1,1 +1,1 @@
-minikube service testtaskps-api-service --url
+minikube service testtaskps-client-service --url

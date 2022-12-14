@@ -7,8 +7,6 @@ using Mafmax.FileConverter.BusinessLogic.Services.FilesService.Responses;
 using Mafmax.FileConverter.DataAccess.Models;
 using Mafmax.FileConverter.DataAccess.Repositories.FilesRepository.Abstractions;
 using Mafmax.FileConverter.DataAccess.Repositories.FilesRepository.Responses;
-using PuppeteerSharp;
-using PuppeteerSharp.Media;
 
 namespace Mafmax.FileConverter.BusinessLogic.Services.FilesService;
 

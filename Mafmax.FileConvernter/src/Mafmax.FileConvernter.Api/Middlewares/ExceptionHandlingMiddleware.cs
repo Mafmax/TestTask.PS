@@ -64,6 +64,6 @@ public class ExceptionHandlingMiddleware : IMiddleware
 
     private static async Task WriteError(HttpContext context, string message)
     {
-        await context.Response.WriteAsJsonAsync(new { Error = message });
+        await context.Response.WriteAsJsonAsync(new { Errors = new[] { message } });
     }
 }

@@ -17,3 +17,9 @@ background:
   name: testtaskps-background-worker
   image: mafmax/testtaskps-background-worker:1.0.0
   port: 80 
+client:
+  name: testtaskps-client
+  service: testtaskps-client-service
+  servicePort: 6666
+  image: mafmax/testtaskps-client:1.1.11
+  port: 3000

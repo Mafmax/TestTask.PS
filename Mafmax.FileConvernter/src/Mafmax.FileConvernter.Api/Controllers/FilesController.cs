@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
-using FluentValidation.AspNetCore;
 using Mafmax.FileConvernter.Api.Controllers.Abstracrions;
+using Mafmax.FileConvernter.Api.Extensions;
 using Mafmax.FileConvernter.Api.Filters;
 using Mafmax.FileConvernter.Api.Filters.OpenApiFilters;
 using Mafmax.FileConverter.BusinessLogic.Services.FilesService.Abstractions;
@@ -30,6 +30,12 @@ public class FilesController : ApplicationControllerBase
     }
 
     // TODO mafmax: Delete
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="settings"></param>
+    /// <param name="sharedSettings"></param>
+    /// <returns></returns>
     [HttpGet("variables")]
     public ActionResult<object> GetEnvAsync(
         [FromServices] IOptions<MongoDbSettings> settings,
@@ -48,7 +54,6 @@ public class FilesController : ApplicationControllerBase
     /// <summary>
     /// Uploads file as multipart form data.
     /// </summary>
-    /// <returns></returns>
     [DisableFormValueModelBinding]
     [RequiresMultipartFile]
     [HttpPost("upload")]
@@ -63,39 +68,23 @@ public class FilesController : ApplicationControllerBase
             (model, c) => model.PartitionFileContent = c,
             cancellationToken);
 
-        var validationResult = await requestValidator
-            .ValidateAsync(request, cancellationToken);
+        if (requestValidator.ModelIsInvalid(request, out var error)) 
+            return error;
 
-        if (validationResult.IsValid)
-        {
-            return await _filesService.UploadFileAsync(request, cancellationToken);
-        }
-
-        validationResult.AddToModelState(ModelState);
-
-        return BadRequest(ModelState);
-
+        return await _filesService.UploadFileAsync(request, cancellationToken);
     }
 
     /// <summary>
     /// Downloads file.
     /// </summary>
-    /// <exception cref="InvalidOperationException"></exception>
     [HttpGet("download/{FileId}")]
     public async Task<ActionResult<DownloadFileResponse>> DownloadFileAsync(
        [FromRoute] DownloadFileRequest request,
        [FromServices] IValidator<DownloadFileRequest> requestValidator,
        CancellationToken cancellationToken = default)
     {
-        var validationResult = await requestValidator
-            .ValidateAsync(request, cancellationToken);
-
-        if (!validationResult.IsValid)
-        {
-            validationResult.AddToModelState(ModelState);
-
-            return BadRequest(ModelState);
-        }
+        if (requestValidator.ModelIsInvalid(request, out var error))
+            return error;
 
         var (name, content) = await _filesService.DownloadFileAsync(request, cancellationToken);
 
@@ -113,8 +102,12 @@ public class FilesController : ApplicationControllerBase
     [HttpGet("convert/{FileId}")]
     public async Task<ActionResult<ConvertFileResponse>> ConvertFileAsync(
         [FromRoute] ConvertFileRequest request,
+        [FromServices] IValidator<ConvertFileRequest> requestValidator,
         CancellationToken cancellationToken = default)
     {
+        if (requestValidator.ModelIsInvalid(request, out var error))
+            return error;
+
         return await _filesService.ConvertFileAsync(request, cancellationToken);
     }
 
@@ -124,6 +117,12 @@ public class FilesController : ApplicationControllerBase
     [HttpGet("name/{FileId}")]
     public async Task<ActionResult<GetFileNameResponse>> GetFileNameAsync(
         [FromRoute] GetFileNameRequest request,
-        CancellationToken cancellationToken = default) =>
-        await _filesService.GetFileNameAsync(request, cancellationToken);
+        [FromServices] IValidator<GetFileNameRequest> requestValidator,
+        CancellationToken cancellationToken = default)
+    {
+        if(requestValidator.ModelIsInvalid(request, out var error))
+            return error;
+
+        return await _filesService.GetFileNameAsync(request, cancellationToken);
+    }
 }

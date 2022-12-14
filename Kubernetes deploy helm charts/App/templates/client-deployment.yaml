@@ -1,0 +1,26 @@
+﻿apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.client.name }}
+  labels:
+    app: {{ .Values.client.name }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Values.client.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.client.name }}
+    spec:
+      containers:
+        - name: {{ .Values.client.name }}
+          image: {{ .Values.client.image }}
+          ports:
+            - containerPort: {{ .Values.client.port }}
+          env:
+            - name: TESTTASKPS_API_HOST
+              value: {{ .Values.api.service }}
+            - name: TESTTASKPS_API_PORT
+              value: "{{ .Values.api.servicePort }}"

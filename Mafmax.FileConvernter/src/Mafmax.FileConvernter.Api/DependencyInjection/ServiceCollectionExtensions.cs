@@ -1,4 +1,3 @@
-using FluentValidation.AspNetCore;
 using Mafmax.FileConvernter.Api.Filters.OpenApiFilters;
 using Mafmax.FileConvernter.Api.Middlewares;
 using Mafmax.FileConverter.BusinessLogic.DependencyInjection;
@@ -17,8 +16,8 @@ public static class ServiceCollectionExtension
     /// <param name="configuration">Configuration.</param>
     /// <returns>Collection of configured services to allow method chaining.</returns>
     public static IServiceCollection ConfigureApi(this IServiceCollection services, IConfiguration configuration) =>
-        services.AddControllers().Services
-            .AddFluentValidationAutoValidation()
+        services
+            .AddControllers().Services
             .AddEndpointsApiExplorer()
             .AddSwaggerGen(s => s.OperationFilter<RequiresMultipartFileOperationFilter>())
             .SetupBusinessLayer(configuration)
