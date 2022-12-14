@@ -29,28 +29,6 @@ public class FilesController : ApplicationControllerBase
         _filesService = filesService;
     }
 
-    // TODO mafmax: Delete
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="settings"></param>
-    /// <param name="sharedSettings"></param>
-    /// <returns></returns>
-    [HttpGet("variables")]
-    public ActionResult<object> GetEnvAsync(
-        [FromServices] IOptions<MongoDbSettings> settings,
-        [FromServices] IOptions<ApplicationSettings> sharedSettings)
-    {
-        var result = new
-        {
-            MongoDbConnectionString = Environment.GetEnvironmentVariable("MongoDbSettings__ConnectionString"),
-            AppsettingsSection = settings.Value.ConnectionString,
-            Shared = sharedSettings.Value
-        };
-
-        return result;
-    }
-
     /// <summary>
     /// Uploads file as multipart form data.
     /// </summary>
